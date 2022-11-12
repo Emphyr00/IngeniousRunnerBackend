@@ -2,7 +2,7 @@ import random
 
 class Field:
     def __init__(self, x : int, y : int):
-        self.options = list(range(1, 7))
+        self.options = list(range(1, 8))
         self.value = None
         self.x = x
         self.y = y
@@ -16,7 +16,7 @@ class Field:
     def getOptionsCount(self):
         return len(self.options)
 
-    def overwritteOptions (self, newOptions):
+    def overwritteOptions (self, newOptions : list):
         self.options = newOptions
     
     def chooseOption(self):
@@ -27,7 +27,7 @@ class Field:
         return self.value
 
     def removeOptions(self, optionsToRemove : list) -> bool:
-        if (self.getValue() == None):
+        if (self.getValue() != None):
             return False
 
         options = self.getOptions()
@@ -41,7 +41,7 @@ class Field:
         return True
     
     def limitToOption (self, optionTolimit : int) -> bool:
-        if (self.getValue() == None):
+        if (self.getValue() != None):
             return False
         
         options = self.getOptions()
