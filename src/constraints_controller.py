@@ -3,6 +3,9 @@ from block import Block
 
 class ConstraintsController:
 
+    BLOCKWIDTH=10
+    BLOCKHEIGHT=3
+
     UNASSIGNED=None
     EMPTY=0
     SINGLE_FENCE=1
@@ -11,7 +14,7 @@ class ConstraintsController:
     WATER=4
     SMALL_WALL=5
     BIG_WALL=6
-    BREAKEABLE_WALL=7
+    BREAKABLE_WALL=7
 
     def __init__(self, entropy=8):
         self.entropy = entropy
@@ -20,19 +23,32 @@ class ConstraintsController:
     def getEntropy(entropy) -> int:
         return entropy
 
+    def checkBounds(self, x, y) -> bool:
+        if ((x < self.BLOCKWIDTH and x > 0) and (y < self.BLOCKHEIGHT and y > 0)):
+            return True
+        else:
+            return False
+
     def applySingleFenceContstraints(self, block : Block, field : Field):
         self.counter[field.getValue()] += 1
+        
+        if (self.checkBounds(field.x + 1, field.y)): 
+            block.removeOptions(field.x + 1, field.y, [self.DOUBLE_FENCE])
+        
+        if (self.checkBounds(field.x - 1, field.y)):
+            block.removeOptions(field.x + 1, field.y, [self.DOUBLE_FENCE])
 
-        # Top
-        if (field.y == 0):
-            
-        # Middle
-        elif (field.y == 1):
+        row = block.getRow(field.x)
+        count = 0
+        for field in row:
+            if (field.getValue() == self.SINGLE_FENCE or field.getValue() == self.DOUBLE_FENCE):
+                count += 1
 
-        # Bottom
-        elif (field.y == 2):
-            
-    
+        if (count >= 2):
+            for field in row:
+                field.removeOptions([self.SINGLE_FENCE, self.DOUBLE_FENCE])
+                
+
     def applyDoubleFenceContstraints(self, block : Block, field : Field):
         self.counter[field.getValue()] += 1
     
@@ -50,3 +66,5 @@ class ConstraintsController:
 
     def applyBreakableWallContstraints(self, block : Block, field : Field):
         self.counter[field.getValue()] += 1
+
+        

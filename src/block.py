@@ -15,15 +15,19 @@ class Block:
         self.fields = [[Field(x, y, self.constraintsController.getEntropy()) for y in range(3)] for x in range(10)]
 
     def getField(self, x : int, y: int) -> Field: 
-        return self.array[x][y]
+        return self.fields[x][y]
+
+    def getRow(self, x : int) -> list[Field]:
+        return self.fields[x]
 
     def fillBlock(self):
+        end = False
         while end == False:
             end = True
             field = self.getLeastEntropyField()
-            if (field != self.UNASSIGNED):
+            if (field != self.constraintsController.UNASSIGNED):
                 end = False
-                option = field.chooseOption()
+                field.chooseOption()
                 self.updateOptions(field)
         
     def getLeastEntropyField(self) -> Field | None:
@@ -38,22 +42,28 @@ class Block:
                         field = self.getField(x, y)
         return field     
 
-    def updateOptions(self, field : Field):
+    def updateOptions(self, field : Field) -> None:
         match field.getValue():
             case self.EMPTY:
-                return True
-            case self.SINGLE_FENCE:
+                return
+            case self.constraintsController.SINGLE_FENCE:
                 self.constraintsController.applySingleFenceContstraints(self, field)
-            case self.DOUBLE_FENCE:
-                self.constraintsController.applySingleFenceContstraints(self, field)
-            case self.BENCH:
+            case self.constraintsController.DOUBLE_FENCE:
+                self.constraintsController.applyDoubleFenceContstraints(self, field)
+            case self.constraintsController.BENCH:
                 self.constraintsController.applyBenchContstraints(self, field)
-            case self.WATER:
+            case self.constraintsController.WATER:
                 self.constraintsController.applyWaterContstraints(self, field)
-            case self.SMALL_WALL:
+            case self.constraintsController.SMALL_WALL:
                 self.constraintsController.applySmallWallContstraints(self, field)
-            case self.BIG_WALL:
+            case self.constraintsController.BIG_WALL:
                 self.constraintsController.applyBigWallContstraints(self, field)
-            case self.BRAKEABLE_WALL:
+            case self.constraintsController.BREAKABLE_WALL:
                 self.constraintsController.applyBreakableWallContstraints(self, field)
+
+    def removeOptions(self, x : int, y :int, optionsToRemove : list) -> bool:
+        field = self.getField(x, y)
+
+        return field.removeOptions(optionsToRemove)
+
     
