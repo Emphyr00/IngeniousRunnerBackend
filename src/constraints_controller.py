@@ -101,9 +101,9 @@ class ConstraintsController:
         for field in row:
             field.removeOptions([ self.BENCH, self.WATER, self.SMALL_WALL ])
             if (field.getValue() == None):
-                 count += 1
+                 countNone += 1
             if (field.getValue() == self.BIG_WALL):
-                 count += 1
+                 countBigWall += 1
         
         # Wall row
         if (countBigWall == 2):
