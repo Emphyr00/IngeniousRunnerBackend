@@ -9,22 +9,22 @@ class Generator:
         
     def updateOptions(self, field : Field) -> None:
         match field.getValue():
-            case self.EMPTY:
+            case self.constraintsController.EMPTY:
                 return
             case self.constraintsController.SINGLE_FENCE:
-                self.constraintsController.applySingleFenceContstraints(self, self.self.block, field)
+                self.constraintsController.applySingleFenceContstraints(self.block, field)
             case self.constraintsController.DOUBLE_FENCE:
-                self.constraintsController.applyDoubleFenceContstraints(self, self.block, field)
+                self.constraintsController.applyDoubleFenceContstraints(self.block, field)
             case self.constraintsController.BENCH:
-                self.constraintsController.applyBenchContstraints(self, self.block, field)
+                self.constraintsController.applyBenchContstraints(self.block, field)
             case self.constraintsController.WATER:
-                self.constraintsController.applyWaterContstraints(self, self.block, field)
+                self.constraintsController.applyWaterContstraints(self.block, field)
             case self.constraintsController.SMALL_WALL:
-                self.constraintsController.applySmallWallContstraints(self, self.block, field)
+                self.constraintsController.applySmallWallContstraints(self.block, field)
             case self.constraintsController.BIG_WALL:
-                self.constraintsController.applyBigWallContstraints(self, self.block, field)
+                self.constraintsController.applyBigWallContstraints(self.block, field)
             case self.constraintsController.BREAKABLE_WALL:
-                self.constraintsController.applyBreakableWallContstraints(self, self.block, field)
+                self.constraintsController.applyBreakableWallContstraints(self.block, field)
                 
     def fillBlock(self):
         end = False
@@ -35,3 +35,5 @@ class Generator:
                 end = False
                 field.chooseOption()
                 self.updateOptions(field)
+                
+        return self.block

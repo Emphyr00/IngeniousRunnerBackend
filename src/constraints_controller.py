@@ -16,8 +16,8 @@ class ConstraintsController:
         self.entropy = entropy
         self.counter = [0 for i in range(entropy)] # Counter how many elements of each kind were placed
 
-    def getEntropy(entropy) -> int:
-        return entropy
+    def getEntropy(self) -> int:
+        return self.entropy
 
     def applySingleFenceContstraints(self, block : Block, field : Field):
         self.counter[field.getValue()] += 1
@@ -82,6 +82,14 @@ class ConstraintsController:
     
     def applyWaterContstraints(self, block : Block, field : Field):
         self.counter[field.getValue()] += 1
+        
+        row = block.getRow(field.x)
+        
+        for field in row:
+            field.removeOptions([ self.BENCH, self.WATER, self.SMALL_WALL, self.BIG_WALL ])
+        
+        if (block.checkBounds(field.x + 1, field.y)): 
+            block.removeOptions(field.x + 1, field.y, [self.SMALL_WALL, self.BIG_WALL, self.BREAKABLE_WALL])
 
     def applySmallWallContstraints(self, block : Block, field : Field):
         self.counter[field.getValue()] += 1
@@ -93,6 +101,9 @@ class ConstraintsController:
     
     def applyBigWallContstraints(self, block : Block, field : Field):
         self.counter[field.getValue()] += 1
+        
+        if (block.checkBounds(field.x - 1, field.y)): 
+            block.removeOptions(field.x - 1, field.y, [self.WATER])
 
         row = block.getRow(field.x)
         
@@ -124,7 +135,7 @@ class ConstraintsController:
         countWalls=0
         for field in row:
             if (field.getValue() == self.BIG_WALL or field.getValue() == self.BREAKABLE_WALL):
-                count += 1
+                countWalls += 1
             # dont want to have water bench or small wall same row
             field.removeOptions([ self.BENCH, self.WATER, self.SMALL_WALL ])
 
