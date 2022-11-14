@@ -13,10 +13,15 @@ class DatabaseTest (unittest.TestCase):
         
     def test_saveUser(self):
         connection = DatabaseConnection()
+        connection.refreshDatabase()
+        
         self.assertTrue(connection.saveUser('test'))
         
     def test_getUserByName(self):
         connection = DatabaseConnection()
+        connection.refreshDatabase()
+        connection.saveUser('test')
+        
         user = connection.getUserByName('test')
         
         self.assertEqual(user[0], 1)
@@ -24,11 +29,16 @@ class DatabaseTest (unittest.TestCase):
         
     def test_saveRun(self):
         connection = DatabaseConnection()
-    
+        connection.refreshDatabase()
+        connection.saveUser('test')
+        
         self.assertTrue(connection.saveRun('test', 1, 1, 1, 1, 1))
         
     def test_getAllRunsByUser(self):
         connection = DatabaseConnection()
+        connection.refreshDatabase()
+        connection.saveUser('test')
+        connection.saveRun('test', 1, 1, 1, 1, 1)
         
         runs = connection.getAllRunsByUser('test')
         
@@ -43,10 +53,18 @@ class DatabaseTest (unittest.TestCase):
         
     def test_saveRun_duplicate(self):
         connection = DatabaseConnection()
+        connection.refreshDatabase()
+        connection.saveUser('test')
+        connection.saveRun('test', 1, 1, 1, 1, 1)
+        
         self.assertTrue(connection.saveRun('test', 1, 1, 1, 1, 1))
     
     def test_getAllRunsByUser_duplicate(self):
         connection = DatabaseConnection()
+        connection.refreshDatabase()
+        connection.saveUser('test')
+        connection.saveRun('test', 1, 1, 1, 1, 1)
+        connection.saveRun('test', 1, 1, 1, 1, 1)
         
         runs = connection.getAllRunsByUser('test')
         
@@ -59,24 +77,18 @@ class DatabaseTest (unittest.TestCase):
         self.assertEqual(runs[0][6], 1)
         self.assertEqual(runs[0][7], 2)
         
-    def test_updateUserModel(self):
+    def test_getUserByName_use_model(self):
         connection = DatabaseConnection()
+        connection.refreshDatabase()
+        connection.saveUser('test')
         
         model = MultipleRegression()
         
         model.run()
         
-        pickle_string = str(model.serialize())
+        pickle_string = model.serialize()
         
-        pickle_string = pickle_string[1:]
-        
-        print(pickle_string)
-        
-        connection.updateUserModel('test', pickle_string)
-        
-        
-    def test_getUserByName_use_model(self):
-        connection = DatabaseConnection()
+        self.assertTrue(connection.updateUserModel('test', pickle_string))
         user = connection.getUserByName('test')
         
         self.assertEqual(user[0], 1)

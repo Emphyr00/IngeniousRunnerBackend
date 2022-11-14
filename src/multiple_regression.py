@@ -38,5 +38,6 @@ class MultipleRegression:
         self.regr = regr
         
     def serialize(self):
-        pickle_string = base64.b64encode(pickle.dumps(self.regr, protocol=2))
+        pickle_string = str(base64.b64encode(pickle.dumps(self.regr, protocol=2)))
+        pickle_string = pickle_string[1:]
         return pickle_string
