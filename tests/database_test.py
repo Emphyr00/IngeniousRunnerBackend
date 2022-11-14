@@ -4,6 +4,7 @@ from database.database_connection import DatabaseConnection
 from src.multiple_regression import MultipleRegression
 import pickle
 import base64
+import math
 import numpy as np
 
 class DatabaseTest (unittest.TestCase):
@@ -96,5 +97,5 @@ class DatabaseTest (unittest.TestCase):
         
         model = pickle.loads(base64.b64decode(user[2]))
         
-        self.assertEqual((model.predict(np.array([[3, 5, 2, 1, 3]]))[0]), 0.6507436894402281)
+        self.assertEqual(round((model.predict(np.array([[3, 5, 2, 1, 3]]))[0]), 2), round(0.65, 2))
         
