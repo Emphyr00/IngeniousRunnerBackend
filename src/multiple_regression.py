@@ -1,8 +1,13 @@
 import pandas as pd
 from sklearn import linear_model
 import numpy as np
+import pickle
+import base64
 
 class MultipleRegression: 
+    def __init__(self):
+        self.regr = None    
+
     def run(self):
         data = {'top': [1, 3, 4, 5],
                 'bottom': [3, 1, 4, 5],
@@ -29,3 +34,9 @@ class MultipleRegression:
         print(regr.predict(np.array([[3, 5, 2, 1, 3]])))
         print(regr.predict(np.array([[1, 2, 1, 0, 4]])))
         print(regr.predict(np.array([[5, 5, 7, 4, 5]])))
+        
+        self.regr = regr
+        
+    def serialize(self):
+        pickle_string = base64.b64encode(pickle.dumps(self.regr, protocol=2))
+        return pickle_string
