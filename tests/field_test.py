@@ -1,5 +1,5 @@
 import unittest
-from src.field import Field
+from app.field import Field
 
 class FieldTest (unittest.TestCase):
     def test_create(self):

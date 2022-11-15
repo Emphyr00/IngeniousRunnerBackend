@@ -1,7 +1,7 @@
 import unittest
-from src.block import Block
-from src.field import Field
-from src.constraints_controller import ConstraintsController
+from app.block import Block
+from app.field import Field
+from app.constraint_controllers.constraints_controller import ConstraintsController
 
 class ConstraintsControllerTest (unittest.TestCase):
     def test_create(self):

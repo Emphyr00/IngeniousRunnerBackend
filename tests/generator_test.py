@@ -1,8 +1,8 @@
 import unittest
-from src.block import Block
-from src.field import Field
-from src.generator import Generator
-from src.constraints_controller import ConstraintsController
+from app.block import Block
+from app.field import Field
+from app.generator import Generator
+from app.constraint_controllers.constraints_controller import ConstraintsController
 
 class GeneratorTest (unittest.TestCase):
     def test_fillBlock(self):

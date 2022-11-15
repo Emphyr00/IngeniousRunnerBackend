@@ -1,5 +1,5 @@
-from src.field import Field
-from src.block import Block
+from app.field import Field
+from app.block import Block
 
 class ConstraintsController:
     UNASSIGNED=None

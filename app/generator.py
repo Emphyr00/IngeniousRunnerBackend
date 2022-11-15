@@ -1,6 +1,6 @@
-from src.constraints_controller import ConstraintsController
-from src.field import Field
-from src.block import Block
+from app.constraint_controllers.constraints_controller import ConstraintsController
+from app.field import Field
+from app.block import Block
 
 class Generator:
     def __init__(self, constraintsController : ConstraintsController):

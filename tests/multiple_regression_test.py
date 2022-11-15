@@ -1,6 +1,5 @@
 import unittest
-from src.multiple_regression import MultipleRegression
-
+from app.machine_learning.multiple_regression import MultipleRegression
 
 class MultipleRegressionTest (unittest.TestCase):
     def test_run(self):

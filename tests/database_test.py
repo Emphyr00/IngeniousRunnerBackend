@@ -1,7 +1,7 @@
 import unittest
 import codecs
-from database.database_connection import DatabaseConnection
-from src.multiple_regression import MultipleRegression
+from app.database.database_connection import DatabaseConnection
+from app.machine_learning.multiple_regression import MultipleRegression
 import pickle
 import base64
 import math

@@ -1,6 +1,5 @@
 import psycopg2
 
-
 class DatabaseConnection:
     def __init__(self):
         self.conn = psycopg2.connect(

@@ -1,4 +1,4 @@
-from src.field import Field
+from app.field import Field
 
 # 0 none
 # 1 single fence
