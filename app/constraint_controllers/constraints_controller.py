@@ -1,5 +1,6 @@
 from app.field import Field
 from app.block import Block
+import random
 
 class ConstraintsController:
     UNASSIGNED=None
@@ -143,5 +144,10 @@ class ConstraintsController:
         if (countWalls >= 2):
             field.removeOptions([ self.SINGLE_FENCE, self.DOUBLE_FENCE ])
 
-
+    def chooseOption(self, field : Field):
+        if (len(field.getOptions()) == 0):
+            field.value = 0
+        else:
+            field.value = random.choice(field.getOptions())
+        return field.value
         

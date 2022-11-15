@@ -31,21 +31,6 @@ class FieldTest (unittest.TestCase):
         field.overwritteOptions([1, 2])
         
         self.assertEqual(field.getOptionsCount(), 2)
-        
-    def test_chooseOptions_with_all_available(self):
-        field = Field(0, 0)
-        value = field.chooseOption()
-        
-        self.assertIsInstance(value, int)
-        
-        self.assertTrue(value < 8 and value > 0 )
-    
-    def test_chooseOptions_with_none_available(self):
-        field = Field(0, 0)
-        field.overwritteOptions([])
-        value = field.chooseOption()
-        
-        self.assertEqual(value, 0)
     
     def test_removeOptions_without_value(self):
         field = Field(0, 0)

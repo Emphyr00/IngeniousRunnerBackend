@@ -1,5 +1,3 @@
-import random
-
 class Field:
     def __init__(self, x : int, y : int):
         self.options = list(range(1, 8))
@@ -18,13 +16,6 @@ class Field:
 
     def overwritteOptions (self, newOptions : list):
         self.options = newOptions
-    
-    def chooseOption(self):
-        if (len(self.options) == 0):
-            self.value = 0
-        else:
-            self.value = random.choice(self.options)
-        return self.value
 
     def removeOptions(self, optionsToRemove : list) -> bool:
         if (self.getValue() != None):
