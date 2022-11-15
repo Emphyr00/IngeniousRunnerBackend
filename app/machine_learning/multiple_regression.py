@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn import linear_model
 import numpy as np
+from app.database.database_connection import DatabaseConnection
 import pickle
 import base64
 
@@ -8,34 +9,52 @@ class MultipleRegression:
     def __init__(self):
         self.regr = None    
 
-    def run(self):
-        data = {'top': [1, 3, 4, 5],
-                'bottom': [3, 1, 4, 5],
-                'right': [7, 2, 4, 7],
-                'left': [4, 6, 1, 4],
-                'center': [2, 2, 4, 5],
-                'lose': [1, 1, 1, 2],   
-                }
+    def trainModelForUser(self, userName : str):
+        
+        print('Train model for ' + userName)
+        databaseConnection = DatabaseConnection()
+        
+        runs = databaseConnection.getAllRunsByUser(userName)
+        
+        data = {
+            'top_field': [],
+            'bottom_field': [],
+            'right_field': [],
+            'left_field': [],
+            'center_field': [],
+            'lose_count': [],
+        }
+        
+        for run in runs:
+            data['top_field'].append(run[0])
+            data['bottom_field'].append(run[1])
+            data['right_field'].append(run[2])
+            data['left_field'].append(run[3])
+            data['center_field'].append(run[4])
+            data['lose_count'].append(run[5])
+
+        if (len(data['top_field']) == 0):
+            return
 
         df = pd.DataFrame(data)
 
-        x = df[['top','bottom', 'right', 'left', 'center']]
-        y = df['lose']
+        x = df[['top_field','bottom_field', 'right_field', 'left_field', 'center_field']]
+        y = df['lose_count']
         
         # with sklearn
         regr = linear_model.LinearRegression()
         regr.fit(x.values, y)
 
-        print('Intercept: \n', regr.intercept_)
-        print('Coefficients: \n', regr.coef_)
-
-
-        print(regr.predict(np.array([[0, 0, 0, 0, 0]])))
-        print(regr.predict(np.array([[3, 5, 2, 1, 3]])))
-        print(regr.predict(np.array([[1, 2, 1, 0, 4]])))
-        print(regr.predict(np.array([[5, 5, 7, 4, 5]])))
+        # print('Intercept: \n', regr.intercept_)
+        # print('Coefficients: \n', regr.coef_)
         
         self.regr = regr
+        
+        databaseConnection.updateUserModel(userName, self.serialize())
+        
+        print('Finished training for ' + userName)
+        
+        return True
         
     def serialize(self):
         pickle_string = str(base64.b64encode(pickle.dumps(self.regr, protocol=2)))

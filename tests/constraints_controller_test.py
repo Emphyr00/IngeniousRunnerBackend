@@ -5,13 +5,11 @@ from app.constraint_controllers.constraints_controller import ConstraintsControl
 
 class ConstraintsControllerTest (unittest.TestCase):
     def test_create(self):
-        block = Block()
         cc = ConstraintsController()
         
         self.assertIsInstance(cc, ConstraintsController)
         
     def test_getEntropy(self):
-        block = Block()
         cc = ConstraintsController()
 
         self.assertEqual(cc.getEntropy(), 8)
@@ -32,6 +30,5 @@ class ConstraintsControllerTest (unittest.TestCase):
         field = block.getField(0, 0)
         field.overwritteOptions([])
         value = cc.chooseOption(field)
-        
         
         self.assertEqual(value, 0)

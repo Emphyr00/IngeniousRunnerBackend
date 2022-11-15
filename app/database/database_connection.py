@@ -28,8 +28,6 @@ class DatabaseConnection:
         
         run = cur.fetchall()
         
-        print(run)
-        
         userId = self.getUserByName(userName)[0]
         
         # create new
