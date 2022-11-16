@@ -99,3 +99,31 @@ class DatabaseTest (unittest.TestCase):
         
         self.assertEqual(round((model.predict(np.array([[3, 5, 2, 1, 3]]))[0]), 2), round(0.65, 2))
         
+    def test_addToQueue(self):
+        connection = DatabaseConnection()
+        connection.refreshDatabase()
+        connection.saveUser('test')
+        
+        self.assertTrue(connection.addToQueue('test'))
+        
+    def test_getQueue_empty(self):
+        connection = DatabaseConnection()
+        connection.refreshDatabase()
+        connection.saveUser('test')
+        
+        self.assertEqual(connection.getQueue() == [])
+        
+    def test_getQueue_not_empty(self):
+        connection = DatabaseConnection()
+        connection.refreshDatabase()
+        connection.saveUser('test')
+        
+        connection.addToQueue('test')
+        connection.addToQueue('test2')
+        connection.addToQueue('test4')
+        
+        value = connection.getQueue()[0]
+        
+        self.assertEqual(value[0], 1)
+        self.assertEqual(value[1], 'test')
+        

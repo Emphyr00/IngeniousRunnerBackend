@@ -11,7 +11,7 @@ class MultipleRegression:
 
     def trainModelForUser(self, userName : str):
         
-        print('Train model for ' + userName)
+        print(f"Train model for {userName}")
         databaseConnection = DatabaseConnection()
         
         runs = databaseConnection.getAllRunsByUser(userName)
@@ -52,7 +52,7 @@ class MultipleRegression:
         
         databaseConnection.updateUserModel(userName, self.serialize())
         
-        print('Finished training for ' + userName)
+        print('Finished training')
         
         return True
         

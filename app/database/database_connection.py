@@ -13,7 +13,7 @@ class DatabaseConnection:
     def getAllRunsByUser(self, userName):
         
         cur = self.conn.cursor()
-        cur.execute(f"SELECT * FROM runs INNER JOIN users ON users.id=runs.user_id WHERE users.name LIKE '" + userName + "';" )
+        cur.execute(f"SELECT * FROM runs INNER JOIN users ON users.id=runs.user_id WHERE users.name LIKE '{userName}';" )
         
         value = cur.fetchall()
         
@@ -74,15 +74,38 @@ class DatabaseConnection:
         cur.close()
         
         return value
+
+    def getQueue(self):
+        cur = self.conn.cursor()
+        cur.execute(f"SELECT * FROM queue ORDER BY id LIMIT 1")
+        
+        value = cur.fetchall()
+        
+        if (len(value) == 1):
+            cur.execute(f"DELETE FROM queue WHERE id={value[0][0]}")
+            cur.execute('commit')
+        
+        cur.close()
+        
+        return value
+        
+    def addToQueue(self, userName):
+        cur = self.conn.cursor()
+        cur.execute(f"INSERT INTO queue (user_name) VALUES ('{userName}');")
+        cur.execute('commit')
+        
+        return True
     
     def refreshDatabase (self):
         cur = self.conn.cursor()
         
         cur.execute('DROP TABLE IF EXISTS runs;')
         cur.execute('DROP TABLE IF EXISTS users;')
+        cur.execute('DROP TABLE IF EXISTS queue;')
         
         cur.execute('CREATE TABLE users (id serial PRIMARY KEY, name VARCHAR(50) UNIQUE NOT NULL, model_serialized VARCHAR);')
         cur.execute('CREATE TABLE runs (id serial PRIMARY KEY, user_id integer REFERENCES users (id), top_field smallint NULL, bottom_field smallint NULL, left_field smallint NULL, right_field smallint NULL, center_field smallint, lose_count smallint);')
+        cur.execute('CREATE TABLE queue (id serial PRIMARY KEY, user_name VARCHAR(50) NOT NULL);')
         
         cur.execute('commit')
         
