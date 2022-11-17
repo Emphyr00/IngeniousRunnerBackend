@@ -31,9 +31,12 @@ class Generator:
         while end == False:
             end = True
             field = self.block.getLeastEntropyField()
-            if (field.getValue() != self.constraintsController.UNASSIGNED):
+            if (field != None and field.getValue() == self.constraintsController.UNASSIGNED):
                 end = False
-                self.constraintsController.chooseOption(field)
+                fieldValue = self.constraintsController.chooseOption(field, self.block)
+
+                field.value = fieldValue
+                
                 self.updateOptions(field)
                 
         return self.block
