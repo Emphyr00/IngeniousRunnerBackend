@@ -53,3 +53,14 @@ class Block:
         for x in range(10):
             for y in range(3):
                 self.getField(x, y).removeOptions(options)
+                
+    def toArray(self):
+        block = []
+        for i in range(0, 10):
+            row = []
+            row.append(self.getField(i, 0).getValue())
+            row.append(self.getField(i, 1).getValue())
+            row.append(self.getField(i, 2).getValue())
+            block.append(row)
+            
+        return block
