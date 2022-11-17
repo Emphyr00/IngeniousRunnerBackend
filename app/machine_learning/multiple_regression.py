@@ -6,15 +6,16 @@ import pickle
 import base64
 
 class MultipleRegression: 
-    def __init__(self):
+    def __init__(self, userName):
         self.regr = None    
+        self.userName = userName
 
-    def trainModelForUser(self, userName : str):
+    def trainModelForUser(self):
         
-        print(f"Train model for {userName}")
+        print('Train model for ' + self.userName)
         databaseConnection = DatabaseConnection()
         
-        runs = databaseConnection.getAllRunsByUser(userName)
+        runs = databaseConnection.getAllRunsByUser(self.userName)
         
         data = {
             'top_field': [],
@@ -34,7 +35,7 @@ class MultipleRegression:
             data['lose_count'].append(run[5])
 
         if (len(data['top_field']) == 0):
-            return
+            return False
 
         df = pd.DataFrame(data)
 
@@ -50,9 +51,7 @@ class MultipleRegression:
         
         self.regr = regr
         
-        databaseConnection.updateUserModel(userName, self.serialize())
-        
-        print('Finished training')
+        databaseConnection.updateUserModel(self.userName, self.serialize())
         
         return True
         
@@ -60,3 +59,15 @@ class MultipleRegression:
         pickle_string = str(base64.b64encode(pickle.dumps(self.regr, protocol=2)))
         pickle_string = pickle_string[1:]
         return pickle_string
+
+    def getModel(self):
+        databaseConnection = DatabaseConnection()
+        user = databaseConnection.getUserByName(self.userName)
+        if (len(user[2]) > 1):
+            self.regr = pickle.loads(base64.b64decode(user[2]))
+
+    def predict(self, top_field, bottom_field, right_field, left_field, center_field):
+        if (self.regr != None):
+            value = self.regr.predict(np.array([[top_field, bottom_field, right_field, left_field, center_field]]))[0]
+            print(value)
+            return value
