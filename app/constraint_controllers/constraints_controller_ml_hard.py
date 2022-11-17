@@ -16,7 +16,7 @@ class ConstraintsControllerMlHard(ConstraintsController):
             return 0
         else:
             if (self.model.regr == None):
-                return random.choice(field.getOptions())
+                return random.choice(fieldTarget.getOptions())
             # left, center, right, top, bottom
             fields = []
             row = block.getRow(fieldTarget.x)

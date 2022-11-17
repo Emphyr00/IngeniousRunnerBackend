@@ -3,7 +3,7 @@ import psycopg2
 class DatabaseConnection:
     def __init__(self):
         self.conn = psycopg2.connect(
-            host="localhost",
+            host="172.19.0.3",
             database="brain_runner",
             user="brain_runner",
             password="password",
@@ -69,7 +69,10 @@ class DatabaseConnection:
         cur = self.conn.cursor()
         cur.execute(f"SELECT * FROM users WHERE name LIKE '{userName}';" )
         
-        value = cur.fetchall()[0]
+        value = cur.fetchall()
+        
+        if (len(value)):
+            value = value[0]
         
         cur.close()
         

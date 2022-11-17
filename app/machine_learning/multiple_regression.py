@@ -63,7 +63,7 @@ class MultipleRegression:
     def getModel(self):
         databaseConnection = DatabaseConnection()
         user = databaseConnection.getUserByName(self.userName)
-        if (len(user[2]) > 1):
+        if (user[2] and len(user[2]) > 1):
             self.regr = pickle.loads(base64.b64decode(user[2]))
 
     def predict(self, top_field, bottom_field, right_field, left_field, center_field):
