@@ -16,22 +16,22 @@ class Block:
     def __init__(self):
         self.fields = [[Field(x, y) for y in range(3)] for x in range(10)]
 
-    def getField(self, x : int, y: int) -> Field: 
+    def getField(self, x : int, y: int): 
         return self.fields[x][y]
 
-    def getRow(self, x : int) -> list[Field] | None:
+    def getRow(self, x : int):
         if (not self.checkBounds(x, 0)):
             return None
         return self.fields[x]
 
-    def checkBounds(self, x, y) -> bool:
+    def checkBounds(self, x, y):
         if ((x < self.BLOCKWIDTH and x >= 0) and (y < self.BLOCKHEIGHT and y >= 0)):
             return True
         else:
             return False
 
         
-    def getLeastEntropyField(self) -> Field | None:
+    def getLeastEntropyField(self):
         least = 10
         field = None
         for x in range(10):
@@ -43,13 +43,13 @@ class Block:
                         field = self.getField(x, y)
         return field
 
-    def removeOptions(self, x : int, y : int, optionsToRemove : list) -> bool:
+    def removeOptions(self, x : int, y : int, optionsToRemove : list):
         if (not self.checkBounds(x, 0)):
             return False
 
         return self.getField(x, y).removeOptions(optionsToRemove)
 
-    def removeAllOptions(self, options : list[int]): 
+    def removeAllOptions(self, options): 
         for x in range(10):
             for y in range(3):
                 self.getField(x, y).removeOptions(options)

@@ -17,7 +17,7 @@ class Field:
     def overwritteOptions (self, newOptions : list):
         self.options = newOptions
 
-    def removeOptions(self, optionsToRemove : list) -> bool:
+    def removeOptions(self, optionsToRemove : list):
         if (self.getValue() != None):
             return False
 
@@ -31,7 +31,7 @@ class Field:
 
         return True
     
-    def limitToOption (self, optionTolimit : int) -> bool:
+    def limitToOption (self, optionTolimit : int):
         if (self.getValue() != None):
             return False
         
