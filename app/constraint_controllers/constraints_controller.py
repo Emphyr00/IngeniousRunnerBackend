@@ -13,12 +13,12 @@ class ConstraintsController:
     BIG_WALL=6
     BREAKABLE_WALL=7
 
-    def __init__(self, entropy=8):
-        self.entropy = entropy
-        self.counter = [0 for i in range(entropy)] # Counter how many elements of each kind were placed
+    def __init__(self, userName):
+        self.counter = [0 for i in range(8)] # Counter how many elements of each kind were placed
+        self.userName = userName
 
     def getEntropy(self) -> int:
-        return self.entropy
+        return 8
 
     def applySingleFenceContstraints(self, block : Block, field : Field):
         self.counter[field.getValue()] += 1
@@ -144,10 +144,9 @@ class ConstraintsController:
         if (countWalls >= 2):
             field.removeOptions([ self.SINGLE_FENCE, self.DOUBLE_FENCE ])
 
-    def chooseOption(self, field : Field):
+    def chooseOption(self, field : Field, block : Block):
         if (len(field.getOptions()) == 0):
-            field.value = 0
+            return 0
         else:
-            field.value = random.choice(field.getOptions())
-        return field.value
+            return random.choice(field.getOptions())
         
