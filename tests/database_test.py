@@ -111,6 +111,17 @@ class DatabaseTest (unittest.TestCase):
         
         self.assertTrue(connection.addToQueue('test'))
         
+    def test_getNumberOfRunsForUser(self):
+        connection = DatabaseConnection()
+        connection.refreshDatabase()
+        connection.saveUser('test')
+        connection.saveRun('test', 1, 1, 1, 1, 1)
+        connection.saveRun('test', 1, 1, 1, 1, 1)
+        
+        runsCount = connection.getNumberOfRunsForUser('test')
+        
+        self.assertEqual(runsCount[0][0], 2)
+        
     # def test_getQueue_empty(self):
     #     connection = DatabaseConnection()
     #     connection.refreshDatabase()

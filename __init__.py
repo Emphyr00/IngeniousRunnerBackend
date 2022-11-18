@@ -6,6 +6,7 @@ from app.generator import Generator
 from app.field import Field
 from app.block import Block
 from app.database.database_connection import DatabaseConnection
+from app.machine_learning.multiple_regression import MultipleRegression
 from flask_cors import CORS, cross_origin
 from app.constraint_controllers.constraints_controller import ConstraintsController
 from app.constraint_controllers.constraints_controller_ml_hard import ConstraintsControllerMlHard
@@ -59,6 +60,13 @@ def create_app():
             return { "errro": "NO USER" }, 409
         
         databaseConnection.saveRun(request.json['username'], request.json['top_field'], request.json['bottom_field'], request.json['left_field'], request.json['right_field'], request.json['center_field'])
+        
+        runsCount = databaseConnection.getNumberOfRunsForUser(request.json['username'])[0][0]
+        
+        # every 5 runs train model
+        if (runsCount > 0 and runsCount % 5 == 0):
+            mr = MultipleRegression(request.json['username'])
+            mr.trainModelForUser()
             
         return { "OK": "Saved" }, 200
       

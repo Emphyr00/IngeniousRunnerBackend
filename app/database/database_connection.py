@@ -3,7 +3,7 @@ import psycopg2
 class DatabaseConnection:
     def __init__(self):
         self.conn = psycopg2.connect(
-            host="172.19.0.3",
+            host="172.19.0.2",
             database="brain_runner",
             user="brain_runner",
             password="password",
@@ -98,6 +98,16 @@ class DatabaseConnection:
         cur.execute('commit')
         
         return True
+    
+    def getNumberOfRunsForUser (self, userName):
+        cur = self.conn.cursor()
+        cur.execute(f"SELECT SUM(lose_count) FROM runs INNER JOIN users ON users.id=runs.user_id WHERE users.name LIKE '{userName}';" )
+        
+        value = cur.fetchall()
+        
+        cur.close()
+        
+        return value
     
     def refreshDatabase (self):
         cur = self.conn.cursor()
