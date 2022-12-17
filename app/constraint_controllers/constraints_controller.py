@@ -132,6 +132,10 @@ class ConstraintsController:
         self.counter[field.getValue()] += 1
 
         row = block.getRow(field.x)
+        
+        # remove breakable wall from next field
+        if (block.checkBounds(field.x + 1, field.y)): 
+            block.removeOptions(field.x + 1, field.y, [self.BREAKABLE_WALL])
 
         countWalls=0
         for field in row:

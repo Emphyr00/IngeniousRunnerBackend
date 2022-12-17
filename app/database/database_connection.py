@@ -3,7 +3,7 @@ import psycopg2
 class DatabaseConnection:
     def __init__(self):
         self.conn = psycopg2.connect(
-            host="172.19.0.2",
+            host="172.19.0.3",
             database="brain_runner",
             user="brain_runner",
             password="password",
@@ -54,11 +54,11 @@ class DatabaseConnection:
         
         return True
         
-    def updateUserModel(self, userName, model):
+    def updateUserModel(self, userName, model, featureList):
         cur = self.conn.cursor()
         userId = self.getUserByName(userName)[0]
         
-        cur.execute(f"UPDATE users SET model_serialized={model} WHERE id={userId};")
+        cur.execute(f"UPDATE users SET model_serialized={model}, features_list_serialized={featureList} WHERE id={userId};")
         cur.execute('commit')
         
         cur.close()
@@ -116,7 +116,7 @@ class DatabaseConnection:
         cur.execute('DROP TABLE IF EXISTS users;')
         cur.execute('DROP TABLE IF EXISTS queue;')
         
-        cur.execute('CREATE TABLE users (id serial PRIMARY KEY, name VARCHAR(50) UNIQUE NOT NULL, model_serialized VARCHAR);')
+        cur.execute('CREATE TABLE users (id serial PRIMARY KEY, name VARCHAR(50) UNIQUE NOT NULL, model_serialized VARCHAR, features_list_serialized VARCHAR);')
         cur.execute('CREATE TABLE runs (id serial PRIMARY KEY, user_id integer REFERENCES users (id), top_field smallint NULL, bottom_field smallint NULL, left_field smallint NULL, right_field smallint NULL, center_field smallint, lose_count smallint);')
         cur.execute('CREATE TABLE queue (id serial PRIMARY KEY, user_name VARCHAR(50) NOT NULL);')
         
