@@ -21,21 +21,23 @@ class MultipleRegression:
         data = {
             'top_field': [],
             'bottom_field': [],
-            'right_field': [],
             'left_field': [],
+            'right_field': [],
             'center_field': [],
             'lose_count': []
         }
         
+        print(runs);
         for run in runs:
             runString = list(map(str, run))
-            data['top_field'].append(runString[0])
-            data['bottom_field'].append(runString[1])
-            data['right_field'].append(runString[2])
-            data['left_field'].append(runString[3])
-            data['center_field'].append(runString[4])
-            data['lose_count'].append(runString[5])
+            data['top_field'].append(runString[2])
+            data['bottom_field'].append(runString[3])
+            data['left_field'].append(runString[4])
+            data['right_field'].append(runString[5])
+            data['center_field'].append(runString[6])
+            data['lose_count'].append(runString[7])
 
+        print(data);
         if (len(data['top_field']) == 0):
             return False
 
